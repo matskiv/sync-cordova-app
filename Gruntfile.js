@@ -81,7 +81,8 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('serve', function (target) {
+  grunt.registerTask('serve', function () {
+    var target = grunt.option('target') || 'local';
     if (target === 'local') {
       var conn = 'http://' + grunt.config.get('connect.options.hostname') + ':' +
         grunt.config.get('connect.options.port');

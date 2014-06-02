@@ -39,7 +39,8 @@ var syncUser = (function() {
       // Initialise the Sync Service. See http://docs.feedhenry.com/v2/api_js_client_api.html#$fh.sync for details on initialisation options
       sync.init({
         "sync_frequency": 5,
-        "do_console_log" : true
+        "do_console_log" : true,
+        "storage_strategy" : "dom"
       });
 
       // Provide handler function for receiving notifications from sync service - e.g. data changed
