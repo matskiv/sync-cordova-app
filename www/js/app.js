@@ -1,23 +1,15 @@
-var datasetId = 'myShoppingList';
-var datasetHash;
-var sync;
+angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services'])
 
-$(document).ready(function() {
-  sync = $fh.sync;
-
-  $("[rel='popover']").popover();
-
-  //Bind tab events
-  $('a[data-toggle="tab"]').on('shown', function (e) {
-    e.target // activated tab
-    e.relatedTarget // previous tab
-
-    if(e.target.id == 'tabCollision' ) {
-
-      syncAdmin.reloadCollisions();
+.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if(window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+    }
+    if(window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      StatusBar.styleDefault();
     }
   });
-
-  syncUser.init();
-  syncAdmin.init();
-});
+})
