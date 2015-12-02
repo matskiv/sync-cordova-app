@@ -71,23 +71,6 @@ angular.module('app.services', [])
         $fh.sync.doDelete(datasetId, item.id, success, fail);
       });
     },
-    deleteAll: function() {
-      var deferred = $q.defer();
-      var success = function(r) {
-        deferred.resolve(r);
-      };
-      var fail = function(code, msg) {
-        console.log("error msg" + msg);
-        console.log("error code " + code);
-        deferred.reject(msg)
-      };
-      $fh.sync.doList(datasetId, function(r) {
-        for(var i in r) {
-          $fh.sync.doDelete(datasetId, i, success, fail);
-        }
-      }, fail);
-      return deferred.promise;
-    },
     getItem: function(id) {
       return promiseWrap(function(success, fail) {
         $fh.sync.doRead(datasetId, id, function(r) {
