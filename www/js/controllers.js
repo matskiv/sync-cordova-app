@@ -10,10 +10,6 @@ angular.module('app.controllers', [])
 	$scope.delete = function(item) {
 		sync.deleteItem(item);
 	};
-
-	$scope.deleteAll = function() {
-		sync.deleteAll();
-	};
 })
 
 .controller('editCtrl', function($state, $stateParams, $location, $scope, sync) {
