@@ -25,15 +25,14 @@ angular.module('app.controllers', [])
 	$scope.new = function() {
 		$scope.item = {};
 		$location.path('/tabs/detail/')
-	}
+	};
 
 	$scope.save = function(item) {
+    $state.go('tabs.main');
 		if (item.id) {
 			sync.update(item);
 		} else {
 			sync.save(item);
 		}
-		$scope.item = {};
-		$state.go('tabs.main');
 	};
-})
+});
