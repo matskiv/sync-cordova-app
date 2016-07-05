@@ -78,7 +78,11 @@ module.exports = function (grunt) {
     // Empties folders to start fresh
     clean: {
       server: '.tmp'
-    }
+    },
+
+    browserify: {
+      'www/main.js': ['www/**/**.js']
+    },
   });
 
   grunt.registerTask('serve', function () {
@@ -101,4 +105,5 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('default', ['serve']);
+  grunt.loadNpmTasks('grunt-browserify');
 };
