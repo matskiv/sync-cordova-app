@@ -1,3 +1,9 @@
+var angular = require("angular");
+require("angular-animate");
+require("angular-ui-router");
+require("ionic-scripts");
+require("angular-sanitize");
+
 angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services'])
 .constant('$fh', require("fh-js-sdk"))
 
