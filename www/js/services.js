@@ -1,8 +1,6 @@
-var moment = require("moment");
-
 angular.module('app.services', [])
 
-.factory('sync', ['$q', '$rootScope', '$fh', function($q, $rootScope, $fh) {
+.factory('sync', ['$q', '$rootScope', '$fh', 'moment', function($q, $rootScope, $fh) {
   var datasetId = "myShoppingList";
   function unwrapList(r) {
     var result = [];
