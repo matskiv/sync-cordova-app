@@ -7,6 +7,7 @@ require("angular-sanitize");
 
 angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services'])
 .constant('$fh', require("fh-js-sdk"))
+.constant('moment', require("moment"))
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -21,187 +22,7 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services']
     }
   });
 });
-},{"angular":11,"angular-animate":6,"angular-sanitize":8,"angular-ui-router":9,"fh-js-sdk":12,"ionic-scripts":13}],2:[function(require,module,exports){
-angular.module('app.controllers', [])
-
-  .controller('mainCtrl', function($rootScope, $scope, sync) {
-    sync.init();
-    $rootScope.$on('sync', function(event, list) {
-      $scope.list = list;
-      $scope.$apply();
-    });
-
-    $scope.delete = function(item) {
-      sync.deleteItem(item);
-    };
-  })
-
-  .controller('editCtrl', function($state, $stateParams, $location, $scope, sync) {
-    if ($stateParams.id) {
-      sync.getItem($stateParams.id).then(function(item) {
-        $scope.item = item;
-      });
-      $scope.title = 'Edit';
-    } else {
-      $scope.title = 'New';
-    }
-
-    $scope.new = function() {
-      $scope.item = {};
-      $location.path('/tabs/detail/')
-    };
-
-    $scope.save = function(item) {
-      function navigate() {
-        $state.go('tabs.main');
-      }
-      if (item.id) {
-        sync.update(item).then(navigate);
-      } else {
-        sync.save(item).then(navigate);
-      }
-    };
-  });
-
-},{}],3:[function(require,module,exports){
-angular.module('app.routes', [])
-
-.config(function($stateProvider, $urlRouterProvider) {
-
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
-  $stateProvider
-    .state('tabs.main', {
-      url: '/main',
-      views: {
-        'main': {
-          templateUrl: 'templates/main.html',
-          controller: 'mainCtrl'
-        }
-      }
-    })
-
-    .state('tabs.edit/new', {
-      url: '/detail/:id',
-      views: {
-        'detail': {
-          templateUrl: 'templates/detail.html',
-          controller: 'editCtrl'
-        }
-      }
-    })
-
-    .state('tabs', {
-      url: '/tabs',
-      abstract:true,
-      templateUrl: 'templates/tabs.html'
-    });
-
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tabs/main');
-
-});
-},{}],4:[function(require,module,exports){
-var moment = require("moment");
-
-angular.module('app.services', [])
-
-.factory('sync', ['$q', '$rootScope', '$fh', function($q, $rootScope, $fh) {
-  var datasetId = "myShoppingList";
-  function unwrapList(r) {
-    var result = [];
-    for(var i in r) {
-      result.push(unwrap(r[i], i));
-    }
-    return result.reverse();
-  }
-
-  function unwrap(obj, id) {
-      obj.id = id;
-      obj.moment = moment(obj.data.created).fromNow();
-      return obj;
-  }
-
-  function promiseWrap(block) {
-      var deferred = $q.defer();
-      var success = function(r) {
-        deferred.resolve(r);
-      };
-      var fail = function(code, msg) {
-        console.log("error msg" + msg);
-        console.log("error code " + code);
-        deferred.reject(msg);
-      };
-
-      block(success, fail);
-      return deferred.promise;
-  }
-
-  return {
-    init: function () {
-      $fh.sync.init({
-        "do_console_log" : true,
-        "storage_strategy" : "dom"
-      });
-      var deferred = $q.defer();
-      var success = function(r) {
-        var result = unwrapList(r);
-        $rootScope.$emit('sync', result);
-        deferred.resolve(result);
-      };
-      var fail = function(error) {
-        console.log("error " + error);
-        console.log("error source " + error.source);
-        console.log("error target " + error.target);
-        deferred.reject(error);
-      };
-
-      $fh.sync.manage(datasetId);
-      $fh.sync.notify(function(notification) {
-        if( 'sync_complete' == notification.code ) {
-          $fh.sync.doList(datasetId, success, fail);
-        }
-        else if( 'local_update_applied' === notification.code ) {
-          $fh.sync.doList(datasetId, success, fail);
-        }
-        else if( 'remote_update_failed' === notification.code ) {
-          var errorMsg = notification.message ? notification.message.msg ? notification.message.msg : undefined : undefined;
-          fail(errorMsg);
-        }
-      });
-
-      return deferred.promise;
-    },
-    deleteItem: function(item) {
-      return promiseWrap(function(success, fail) {
-        $fh.sync.doDelete(datasetId, item.id, success, fail);
-      });
-    },
-    getItem: function(id) {
-      return promiseWrap(function(success, fail) {
-        $fh.sync.doRead(datasetId, id, function(r) {
-          success(unwrap(r, id));
-        }, fail);
-      });
-    },
-    update: function(item) {
-      return promiseWrap(function(success, fail) {
-        $fh.sync.doUpdate(datasetId, item.id, item.data, success, fail);
-      });
-    },
-    save: function(item) {
-      item.data.created = new Date().getTime();
-      return promiseWrap(function(success, fail) {
-        $fh.sync.doCreate(datasetId, item.data, success, fail);
-      });
-    }
-  };
-}]);
-
-
-},{"moment":16}],5:[function(require,module,exports){
+},{"angular":8,"angular-animate":3,"angular-sanitize":5,"angular-ui-router":6,"fh-js-sdk":9,"ionic-scripts":10,"moment":13}],2:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.8
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -4342,11 +4163,11 @@ angular.module('ngAnimate', [], function initAngularHelpers() {
 
 })(window, window.angular);
 
-},{}],6:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 require('./angular-animate');
 module.exports = 'ngAnimate';
 
-},{"./angular-animate":5}],7:[function(require,module,exports){
+},{"./angular-animate":2}],4:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.8
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -5086,11 +4907,11 @@ angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
 
 })(window, window.angular);
 
-},{}],8:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 require('./angular-sanitize');
 module.exports = 'ngSanitize';
 
-},{"./angular-sanitize":7}],9:[function(require,module,exports){
+},{"./angular-sanitize":4}],6:[function(require,module,exports){
 /**
  * State-based routing for AngularJS
  * @version v0.2.18
@@ -9630,7 +9451,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-},{}],10:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.8
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -41399,11 +41220,11 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],11:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":10}],12:[function(require,module,exports){
+},{"./angular":7}],9:[function(require,module,exports){
 (function (global){
 !function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var f;"undefined"!=typeof window?f=window:"undefined"!=typeof global?f=global:"undefined"!=typeof self&&(f=self),f.feedhenry=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 (function (global){
@@ -54975,11 +54796,11 @@ module.exports = {
 (19)
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],13:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = window.ionic = {};
 require('ionic-sdk/release/js/ionic');
 require('ionic-sdk/release/js/ionic-angular');
-},{"ionic-sdk/release/js/ionic":15,"ionic-sdk/release/js/ionic-angular":14}],14:[function(require,module,exports){
+},{"ionic-sdk/release/js/ionic":12,"ionic-sdk/release/js/ionic-angular":11}],11:[function(require,module,exports){
 /*!
  * Copyright 2015 Drifty Co.
  * http://drifty.com/
@@ -69024,7 +68845,7 @@ IonicModule
 });
 
 })();
-},{}],15:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 /*!
  * Copyright 2015 Drifty Co.
  * http://drifty.com/
@@ -82323,7 +82144,7 @@ ionic.views.Slider = ionic.views.View.inherit({
 })(ionic);
 
 })();
-},{}],16:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 //! moment.js
 //! version : 2.14.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -86519,4 +86340,4 @@ ionic.views.Slider = ionic.views.View.inherit({
     return _moment;
 
 }));
-},{}]},{},[1,2,3,4]);
+},{}]},{},[1]);
