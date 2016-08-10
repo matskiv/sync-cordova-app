@@ -1,8 +1,6 @@
-var moment = require("moment");
-
 angular.module('app.services', [])
 
-.factory('sync', ['$q', '$rootScope', '$fh', function($q, $rootScope, $fh) {
+.factory('sync', ['$q', '$rootScope', function($q, $rootScope) {
   var datasetId = "myShoppingList";
   function unwrapList(r) {
     var result = [];
@@ -26,7 +24,7 @@ angular.module('app.services', [])
       var fail = function(code, msg) {
         console.log("error msg" + msg);
         console.log("error code " + code);
-        deferred.reject(msg);
+        deferred.reject(msg)
       };
 
       block(success, fail);
