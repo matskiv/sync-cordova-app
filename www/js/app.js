@@ -1,3 +1,5 @@
+//this file gets browserified any updates to it will not be reflected in the studio preview
+
 var angular = require("angular");
 require("angular-animate");
 require("angular-ui-router");
