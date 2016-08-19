@@ -1,6 +1,6 @@
 angular.module('app.services', [])
 
-.factory('sync', ['$q', '$rootScope', '$fh', 'moment', function($q, $rootScope, $fh) {
+.factory('sync', ['$q', '$rootScope', '$fh', 'moment', function($q, $rootScope, $fh, moment) {
   var datasetId = "myShoppingList";
   function unwrapList(r) {
     var result = [];
