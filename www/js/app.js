@@ -1,3 +1,5 @@
+//this file gets browserified any updates to it will not be reflected in the studio preview
+
 var angular = require("angular");
 require("angular-animate");
 require("angular-ui-router");
@@ -6,6 +8,7 @@ require("angular-sanitize");
 
 angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.services'])
 .constant('$fh', require("fh-js-sdk"))
+.constant('moment', require("moment"))
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
