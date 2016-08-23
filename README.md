@@ -8,11 +8,11 @@ Community Project : [Feed Henry](http://feedhenry.org)
 Target Product: RHMAP
 Product Versions: RHMAP 3.8.0+
 Source: https://github.com/feedhenry-templates/sync-cordova-app  
-Prerequisites: fh-js-sdk : 3.0.+, cordova 4.0+
+Prerequisites: fh-js-sdk : 2.14.+, cordova 5.0+
 
 ## What is it?
 
-This application manages items in a collection that is synchronized with a remote RHMAP cloud application.  The user can create, update, and delete collection items.  Refer to [fhconfig.json](www/fhconfig.json) and [services.js](www/js/services.js) for the delevant pieces of code and configuraiton.
+This application manages items in a collection that is synchronized with a remote RHMAP cloud application.  The user can create, update, and delete collection items.  Refer to [fhconfig.json](www/fhconfig.json) and [services.js](www/js/services.js) for the relevant pieces of code and configuraiton.
 
 If you do not have access to a RHMAP instance, you can sign up for a free instance at [https://openshift.feedhenry.com/](https://openshift.feedhenry.com/).
 
@@ -26,13 +26,34 @@ This application and its cloud services are available as a project template in R
 If you wish to contribute to this template, the following information may be helpful; otherwise, RHMAP and its build facilities are the preferred solution.
 
 ###  Prerequisites  
- * fh-js-sdk : 3.0.+
- * cordova: 4.0+
+ * fh-js-sdk : 2.14.+
+ * cordova: 5.0+
 
 ## Build instructions
 
-### configuration
-Edit [fhconfig.json](www/fhconfig.json) to include the relevant information from RHMAP.  
+### local dev with cordova serve
+ * npm install
+ * Edit [fhconfig.json](www/fhconfig.json) to include the relevant information from RHMAP.  
+ * Build and run locally
+```
+cordova serve  
+```
+Go to [http://localhost:8000/](http://localhost:8000/)
+
+### npm dependencies
+The `fh-js-sdk` and other development dependencies are defined in [package.json](package.json) and included in a [browserified script](www/js/main.js).
+
+* This generated [main.js](www/main.js) file is checked-in to allow RHMAP studio preview to statically serve dependencies.
+
+* The [app.js](www/js/app.js) file is browserified and acts as a bridge between template script and npm dependencies. 
+
+* All the other JavaScript files in the template app will not be browserified, in order for you to be able to experiment live edit in RHMAP Studio preview.
+
+### Updating fh-js-sdk version
+To update the JS SDK:
+- change the version in [package.json](package.json)
+- run `npm install` a grunt task is automatically ran to regenerate main.js
+- check-in git repo the new package.json + main.js
 
 ### Grunt
 
