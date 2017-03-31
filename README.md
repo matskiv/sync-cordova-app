@@ -12,7 +12,7 @@ Prerequisites: fh-js-sdk : 2.14.+, cordova 5.0+
 
 ## What is it?
 
-This application manages items in a collection that is synchronized with a remote RHMAP cloud application.  The user can create, update, and delete collection items.  Refer to [fhconfig.json](www/fhconfig.json) and [services.js](www/js/services.js) for the relevant pieces of code and configuraiton.
+This application manages items in a collection that is synchronized with a remote RHMAP cloud application.  The user can create, update, and delete collection items.  Refer to `www/fhconfig.json` and `www/js/services.js` for the relevant pieces of code and configuraiton.
 
 If you do not have access to a RHMAP instance, you can sign up for a free instance at [https://openshift.feedhenry.com/](https://openshift.feedhenry.com/).
 
@@ -33,7 +33,7 @@ If you wish to contribute to this template, the following information may be hel
 
 ### local dev with cordova serve
  * npm install
- * Edit [fhconfig.json](www/fhconfig.json) to include the relevant information from RHMAP.  
+ * Edit `www/fhconfig.json` to include the relevant information from RHMAP.  
  * Build and run locally
 ```
 cordova serve  
@@ -41,17 +41,17 @@ cordova serve
 Go to [http://localhost:8000/](http://localhost:8000/)
 
 ### npm dependencies
-The `fh-js-sdk` and other development dependencies are defined in [package.json](package.json) and included in a [browserified script](www/js/main.js).
+The `fh-js-sdk` and other development dependencies are defined in `package.json` and included in a `www/js/main.js`.
 
-* This generated [main.js](www/main.js) file is checked-in to allow RHMAP studio preview to statically serve dependencies.
+* This generated `www/main.js` file is checked-in to allow RHMAP studio preview to statically serve dependencies.
 
-* The [app.js](www/js/app.js) file is browserified and acts as a bridge between template script and npm dependencies. 
+* The `www/js/app.js` file is browserified and acts as a bridge between template script and npm dependencies. 
 
 * All the other JavaScript files in the template app will not be browserified, in order for you to be able to experiment live edit in RHMAP Studio preview.
 
 ### Updating fh-js-sdk version
 To update the JS SDK:
-- change the version in [package.json](package.json)
+- change the version in `package.json`
 - run `npm install` a grunt task is automatically ran to regenerate main.js
 - check-in git repo the new package.json + main.js
 
@@ -88,12 +88,12 @@ You can also use Grunt to point your App at a local developement server. To do t
 
 ### Initialization
 
-[service.js#init](www/js/services.js#L36) is the method which is responsible for configuring and setting up syncronization.  Further details are available in our [API documentation](http://docs.feedhenry.com/v3/api/api_sync.html).
+`init` in `www/js/services.js`  is the method which is responsible for configuring and setting up syncronization.  Further details are available in our [API documentation](http://docs.feedhenry.com/v3/api/api_sync.html).
 
 ### Creating and Editing Items
 
-[service.js#save(item)](www/js/services.js#L86) is called by the UI when the a item is created, and [service.js#update(item)](www/js/services.js#L81) is called for updates.
+`save(item)` in `www/js/services.js` is called by the UI when the a item is created, and `update(item)` in `www/js/services.js` is called for updates.
 
 ### Removing Items
 
-[service.js#deleteItem(item)](www/js/services.js#L69) is called by the UI when a user swipes to remove an item from the list.
+`deleteItem(item)` in `www/js/services.js` is called by the UI when a user swipes to remove an item from the list.
