@@ -33,7 +33,7 @@ If you wish to contribute to this template, the following information may be hel
 
 ### local dev with cordova serve
  * npm install
- * Edit `www/fhconfig.json` to include the relevant information from RHMAP.  
+ * Edit `www/fhconfig.json` to include the relevant information from [here](https://access.redhat.com/documentation/en-us/red_hat_mobile_application_platform/4.3/html/client_sdk/cordova#cordova-setup).
  * Build and run locally
 ```
 cordova serve  
@@ -92,7 +92,7 @@ You can also use Grunt to point your App at a local developement server. To do t
 
 ### Creating and Editing Items
 
-`save(item)` in `www/js/services.js` is called by the UI when the a item is created, and `update(item)` in `www/js/services.js` is called for updates.
+`save(item)` in `www/js/services.js` is called by the UI when the item is created, and `update(item)` in `www/js/services.js` is called for updates.
 
 ### Removing Items
 
