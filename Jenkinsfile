@@ -22,7 +22,7 @@ stage("checkPlatform") {
 
 node(platform) {
   stage ("Checkout") {
-    sh "git clone https://github.com/feedhenry-templates/sync-cordova-app.git/ && cd sync-cordova-app"
+    checkout scm
   }
 
   stage("prepare") {
